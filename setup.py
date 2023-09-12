@@ -3,9 +3,12 @@ from setuptools import setup, find_packages
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+with open("VERSION", "r") as version_file:
+    version = version_file.read().strip()
+
 setup(
     name='get_user_agent_pls',
-    version='0.0.0b',
+    version=version,
     author='David Hooton',
     author_email='get_user_agent_pls@hooton.org',
     description='A package to fetch get-user-agent strings',
