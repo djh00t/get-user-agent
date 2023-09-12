@@ -4,10 +4,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='get-user-agent',
+    name='get_user_agent',
     version='0.0.0',
     author='David Hooton',
-    author_email='get-user-agent@hooton.org',
+    author_email='get_user_agent@hooton.org',
     description='A package to fetch get-user-agent strings',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'get-user-agent=get-user-agent.get-user-agent:main',
+            'get_user_agent=get_user_agent.get_user_agent:main',
         ],
     },
     classifiers=[
