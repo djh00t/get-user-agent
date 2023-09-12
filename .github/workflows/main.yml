@@ -52,7 +52,7 @@ jobs:
     # Pulls the package from TestPyPI and runs tests
     - name: Pull from TestPyPI and test
       run: |
-        pip install --index-url https://test.pypi.org/simple/ get_user_agent
+        pip install --index-url https://test.pypi.org/simple/ get_user_agent_pls
         # Add commands to run your tests here
         python -m unittest discover
 

@@ -1,4 +1,4 @@
-# Makefile for get_user_agent Python package
+# Makefile for get_user_agent_pls Python package
 
 # Variables
 TWINE_USERNAME ?= __token__

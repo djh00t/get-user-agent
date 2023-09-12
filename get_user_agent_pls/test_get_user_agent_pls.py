@@ -1,7 +1,7 @@
 import os
 import unittest
 from unittest.mock import patch
-from .get_user_agent import fetch_user_agent, USER_AGENTS_FILE
+from .get_user_agent_pls import fetch_user_agent, USER_AGENTS_FILE
 
 class TestUserAgent(unittest.TestCase):
     def setUp(self):

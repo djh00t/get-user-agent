@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from .get_user_agent_scraper import main as fetch_and_save_user_agents
+from .get_user_agent_pls_scraper import main as fetch_and_save_user_agents
 
 # User agents file
 USER_AGENTS_FILE = "user-agents.json"

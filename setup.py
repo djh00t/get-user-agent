@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='get_user_agent',
+    name='get_user_agent_pls',
     version='0.0.0',
     author='David Hooton',
-    author_email='get_user_agent@hooton.org',
+    author_email='get_user_agent_pls@hooton.org',
     description='A package to fetch get-user-agent strings',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/djh00t/get-user-agent',
+    url='https://github.com/djh00t/get-user-agent-pls',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'get_user_agent=get_user_agent.get_user_agent:main',
+            'get_user_agent_pls=get_user_agent_pls.get_user_agent_pls:main',
         ],
     },
     classifiers=[

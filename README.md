@@ -1,4 +1,4 @@
-# User Agent
+# Get User Agent Pls
 
 This Python package allows you to fetch the current user-agent strings for popular browsers. It uses web scraping to fetch the user-agent strings from the website useragentstring.com.
 
@@ -6,14 +6,14 @@ This Python package allows you to fetch the current user-agent strings for popul
 
 The package contains two main scripts:
 
-1. `user_agent_scraper.py`: This script scrapes the user-agent strings for various browsers from useragentstring.com and saves them in a JSON file (`user-agents.json`). The browsers it fetches the user-agent strings for are Edge, Chrome, Firefox, Safari, and GoogleBot.
+1. `get_user_agent_pls_scraper.py`: This script scrapes the user-agent strings for various browsers from useragentstring.com and saves them in a JSON file (`user-agents.json`). The browsers it fetches the user-agent strings for are Edge, Chrome, Firefox, Safari, and GoogleBot.
 
-2. `user_agent.py`: This script fetches a user-agent string. If the `USER_AGENT_API_KEY` environment variable is not set, it uses the locally saved `user-agents.json` file. If the file doesn't exist, it calls `user_agent_scraper.py` to fetch and save the latest user agents. If the `USER_AGENT_API_KEY` environment variable is set, it uses the API to fetch the user-agent string.
+2. `get_user_agent_pls.py`: This script fetches a user-agent string. If the `USER_AGENT_API_KEY` environment variable is not set, it uses the locally saved `user-agents.json` file. If the file doesn't exist, it calls `get_user_agent_pls_scraper.py` to fetch and save the latest user agents. If the `USER_AGENT_API_KEY` environment variable is set, it uses the API to fetch the user-agent string.
 
 ## How to use
 
-1. Install the package using `pip install user_agent`.
-2. Import the `fetch_user_agent` function from the `user_agent` module.
+1. Install the package using `pip install get_user_agent_pls`.
+2. Import the `fetch_user_agent` function from the `get_user_agent_pls` module.
 3. Call the function with the browser and operating system as arguments. The available options for the browser are "Edge", "Chrome", "Firefox", "Safari", and "GoogleBot". The operating system argument is currently not used. For example, `fetch_user_agent("chrome", "windows")`.
 
 Example returned values:
