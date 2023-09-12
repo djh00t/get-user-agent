@@ -54,17 +54,12 @@ jobs:
           python -m pip install --upgrade pip
           make check-packages
       
-      # Read the version number from the VERSION file, increment it, and set the VERSION
+      # Increment the version number in the VERSION file and set the VERSION
       # environment variable
-      - name: Read and increment version number
-        id: version
+      - name: Increment version number
         run: |
-          echo "::set-output name=version::$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)"
-      - name: Build and test - Version ${{ steps.version.outputs.version }}
-        run: |
-          make sdist
-          make wheel
-          make test
+          make update-version
+          export VERSION=$(cat VERSION)
 
       # Builds the package and runs tests
       - name: Build and test
@@ -105,17 +100,12 @@ jobs:
           python -m pip install --upgrade pip
           make check-packages
       
-      # Read the version number from the VERSION file, increment it, and set the VERSION
+      # Increment the version number in the VERSION file and set the VERSION
       # environment variable
-      - name: Read and increment version number
-        id: version
+      - name: Increment version number
         run: |
-          echo "::set-output name=version::$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)"
-      - name: Build and test - Version ${{ steps.version.outputs.version }}
-        run: |
-          make sdist
-          make wheel
-          make test
+          make update-version
+          export VERSION=$(cat VERSION)
 
       # Builds the package and runs tests
       - name: Build and test
