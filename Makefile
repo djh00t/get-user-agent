@@ -41,7 +41,7 @@ upload: test wheel
 	@echo "Uploading Version $NEW_VERSION to PyPI..."
 	twine upload --username $(TWINE_USERNAME) --password $(PYPI_TWINE_PASSWORD) dist/*
 
-## install: Install the package locally in get_user_agent_pls conda environment
+## install: Install the package locally
 install:
 	pip install -e .
 
@@ -55,26 +55,14 @@ test: check-packages
 	@echo "Running unit tests..."
 	python -m unittest discover
 
-## update-version: Read the version number from VERSION file, increment the last digit, update the VERSION file, and echo it
+## update-version: Read the version number from VERSION file, it will look like A.B.C Increment the third (C) number by 1 and write it back to the VERSION file
 update-version:
-	@echo "Updating version..."
-	$(eval NEW_VERSION=$(shell echo $$(($(cat VERSION | rev | cut -d. -f1 | rev)+1))))
-	echo "$(NEW_VERSION)" > VERSION
-	@echo "Version updated to $(NEW_VERSION)"
+	@echo "Updating version number..."
+	@NEW_VERSION=$$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION); \
+	echo $$NEW_VERSION > VERSION; \
+	echo "New version number is $$NEW_VERSION"
+
 
 .PHONY: clean check-packages sdist wheel upload-test upload install uninstall test update-version
 
-# Check if conda or miniconda is installed, if not install miniconda
-check-conda:
-	@command -v conda >/dev/null 2>&1 || { \
-		echo "Conda is not installed. Installing Miniconda..."; \
-		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh; \
-		bash ~/miniconda.sh -b -p $$HOME/miniconda; \
-		eval "$$($$HOME/miniconda/bin/conda shell.bash hook)"; \
-		conda init; \
-	}
 
-# Create a new conda environment
-create-env: check-conda
-	conda create --name $(CONDA_ENV_NAME) python=3.8 --yes
-	@echo "To activate environment, use: conda activate $(CONDA_ENV_NAME)"
