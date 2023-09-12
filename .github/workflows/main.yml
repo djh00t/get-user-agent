@@ -16,7 +16,7 @@
 ### used to increment the version number in the VERSION file.
 ###
 
-name: CI - Version ${{ env.VERSION }}
+name: CI
 
 # Controls when the action will run. 
 on:
@@ -57,9 +57,14 @@ jobs:
       # Read the version number from the VERSION file, increment it, and set the VERSION
       # environment variable
       - name: Read and increment version number
+        id: version
         run: |
-          VERSION=$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)"
+      - name: Build and test - Version ${{ steps.version.outputs.version }}
+        run: |
+          make sdist
+          make wheel
+          make test
 
       # Builds the package and runs tests
       - name: Build and test
@@ -100,12 +105,17 @@ jobs:
           python -m pip install --upgrade pip
           make check-packages
       
-      # Increment the version number in the VERSION file and set the VERSION
+      # Read the version number from the VERSION file, increment it, and set the VERSION
       # environment variable
-      - name: Increment version number
+      - name: Read and increment version number
+        id: version
         run: |
-          make update-version
-          export VERSION=$(cat VERSION)
+          echo "::set-output name=version::$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)"
+      - name: Build and test - Version ${{ steps.version.outputs.version }}
+        run: |
+          make sdist
+          make wheel
+          make test
 
       # Builds the package and runs tests
       - name: Build and test
