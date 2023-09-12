@@ -1,9 +1,9 @@
-# Makefile for user_agent Python package
+# Makefile for get_user_agent Python package
 
 # Variables
 TWINE_USERNAME ?= __token__
-TEST_TWINE_PASSWORD ?= $(TEST_PYPI_USER_AGENT)
-PYPI_TWINE_PASSWORD ?= $(PYPI_USER_AGENT)
+TEST_TWINE_PASSWORD ?= $(TEST_PYPI_GET_USER_AGENT)
+PYPI_TWINE_PASSWORD ?= $(PYPI_GET_USER_AGENT)
 
 # Targets
 
@@ -45,7 +45,7 @@ install:
 
 ## uninstall: Uninstall the local package
 uninstall:
-	pip uninstall user_agent
+	pip uninstall get_user_agent
 
 ## test: Run the unit tests
 test: check-packages

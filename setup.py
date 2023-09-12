@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='user_agent',
+    name='get-user-agent',
     version='0.0.0',
     author='David Hooton',
-    author_email='user_agent@hooton.org',
+    author_email='get-user-agent@hooton.org',
     description='A package to fetch user-agent strings',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/djh00t/user_agent',
+    url='https://github.com/djh00t/get-user-agent',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'user_agent=user_agent.user_agent:main',
+            'get-user-agent=get-user-agent.get-user-agent:main',
         ],
     },
     classifiers=[
