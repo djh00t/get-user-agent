@@ -1,6 +1,7 @@
 import requests
 import json
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 # URLs for scraping user-agent strings for various browsers
 browser_urls = {
@@ -22,11 +23,11 @@ def fetch_html(url):
     response = requests.get(url)
     return response.text
 
-def extract_first_user_agent_url(html_content, selector=first_record_selector):
+def extract_first_user_agent_url(html_content, base_url, selector=first_record_selector):
     """Extract the URL of the first user-agent string from the HTML content."""
     soup = BeautifulSoup(html_content, 'html.parser')
     first_record = soup.select_one(selector)
-    return first_record['href'] if first_record else None
+    return urljoin(base_url, first_record['href']) if first_record else None
 
 def extract_user_agent_string(html_content, selector=user_agent_selector):
     """Extract the user-agent string from the redirected page's HTML content."""
@@ -38,7 +39,7 @@ def main():
     user_agents = {}
     for browser, url in browser_urls.items():
         html_content = fetch_html(url)
-        first_url = extract_first_user_agent_url(html_content)
+        first_url = extract_first_user_agent_url(html_content, url)
         if first_url:
             new_html_content = fetch_html(first_url)
             user_agent = extract_user_agent_string(new_html_content)
@@ -46,8 +47,7 @@ def main():
                 user_agents[browser] = user_agent
                 print(f"New user-agent string for {browser}: {user_agent}")
 
-    with open("user-agents.json", "w") as f:
-        json.dump(user_agents, f, indent=4)
+    return user_agents
 
 if __name__ == "__main__":
     main()
