@@ -2,8 +2,13 @@
 
 # Variables
 TWINE_USERNAME ?= __token__
+ifeq ($(GITHUB_ACTIONS),true)
+TEST_TWINE_PASSWORD ?= ${{ secrets.TEST_PYPI_USER_AGENT }}
+PYPI_TWINE_PASSWORD ?= ${{ secrets.PYPI_USER_AGENT }}
+else
 TEST_TWINE_PASSWORD ?= $(shell echo $$TEST_PYPI_USER_AGENT)
 PYPI_TWINE_PASSWORD ?= $(shell echo $$PYPI_USER_AGENT)
+endif
 
 # Targets
 
