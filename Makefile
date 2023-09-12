@@ -51,9 +51,9 @@ uninstall:
 test: check-packages
 	python -m unittest discover
 
-## update-version: Update the version number in setup.py
+## update-version: Update the version number in VERSION file
 update-version:
-	sed -i 's/^    version=".*",/    version="$(NEW_VERSION)",/' setup.py
+	echo "$(NEW_VERSION)" > VERSION
 
 .PHONY: clean check-packages sdist wheel upload-test upload install uninstall test update-version
 
