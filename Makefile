@@ -31,13 +31,13 @@ sdist: clean
 wheel: clean
 	python setup.py sdist bdist_wheel
 
-## upload-test: Update version number, echo it to console and upload the distribution package to TestPyPI
-upload-test: update-version wheel
+## upload-test: Run tests, if they pass update version number, echo it to console and upload the distribution package to TestPyPI
+upload-test: test update-version wheel
 	@echo "Uploading Version $NEW_VERSION to TestPyPI..."
 	twine upload --repository-url https://test.pypi.org/legacy/ --username $(TWINE_USERNAME) --password $(TEST_TWINE_PASSWORD) dist/*
 
-## upload: Update version number and upload the distribution package to PyPI
-upload: update-version wheel
+## upload: Run tests, if they pass update version number and upload the distribution package to PyPI
+upload: test wheel
 	@echo "Uploading Version $NEW_VERSION to PyPI..."
 	twine upload --username $(TWINE_USERNAME) --password $(PYPI_TWINE_PASSWORD) dist/*
 
