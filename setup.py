@@ -8,7 +8,7 @@ setup(
     version='0.0.0',
     author='David Hooton',
     author_email='get-user-agent@hooton.org',
-    description='A package to fetch user-agent strings',
+    description='A package to fetch get-user-agent strings',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/djh00t/get-user-agent',

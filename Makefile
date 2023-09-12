@@ -1,4 +1,4 @@
-# Makefile for get_user_agent Python package
+# Makefile for get-user-agent Python package
 
 # Variables
 TWINE_USERNAME ?= __token__
@@ -45,7 +45,7 @@ install:
 
 ## uninstall: Uninstall the local package
 uninstall:
-	pip uninstall get_user_agent
+	pip uninstall get-user-agent
 
 ## test: Run the unit tests
 test: check-packages

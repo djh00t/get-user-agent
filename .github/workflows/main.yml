@@ -47,23 +47,23 @@ jobs:
     # If tests pass, pushes the package to TestPyPI
     - name: Push to TestPyPI
       run: |
-        make upload-test TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }} PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
+        make upload-test TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }}
 
     # Pulls the package from TestPyPI and runs tests
     - name: Pull from TestPyPI and test
       run: |
-        pip install --index-url https://test.pypi.org/simple/ user_agent
+        pip install --index-url https://test.pypi.org/simple/ get-user-agent
         # Add commands to run your tests here
         python -m unittest discover
 
     # If tests pass, pushes the package to PyPI and runs tests
     - name: Push to PyPI
       run: |
-        make upload TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }} PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
+        make upload PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
     # Pulls the package from PyPI and runs tests
     - name: Pull from PyPI and test
       run: |
-        pip install user_agent
+        pip install get-user-agent
         python -m unittest discover
 
     # Updates the version number
