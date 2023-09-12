@@ -16,20 +16,17 @@ endif
 clean:
 	rm -rf build/ dist/ *.egg-info/
 
-## check-packages: Check for required pip packages and requirements.txt
+## check-packages: Check for required pip packages and requirements.txt, install if missing
 check-packages:
 	@echo "Checking for required pip packages and requirements.txt..."
 	@if [ ! -f requirements.txt ]; then \
 		echo "requirements.txt not found. Please add it to the project root."; \
 		exit 1; \
 	fi
-	@python -c "\
-	try:\
-		import twine, wheel;\
-	except ImportError:\
-		print('Required packages are not installed. Please run pip install twine wheel.');\
-		exit(1);\
-	"
+	@echo "Installing missing packages from requirements.txt..."
+	@pip install -r requirements.txt
+	@echo "Installing twine and wheel..."
+	@pip install twine wheel
 
 ## sdist: Create a source distribution package
 sdist: clean
