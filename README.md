@@ -36,3 +36,24 @@ These can be installed using `pip install -r requirements.txt`.
 ## License
 
 This package is licensed under the MIT License. See the `LICENSE` file for more details.
+## Running the tests
+
+To run the tests, navigate to the root directory of the project and run the following command:
+
+```bash
+make test
+```
+
+This will discover and run all the test cases in the `test_user_agent.py` file. The unit tests create a `user-agents.json` file if it does not exist before the tests run. If the file did not exist before the tests, it is removed after the tests complete.
+
+Here is an example of successful unit tests:
+
+```bash
+$ make test
+python -m unittest discover
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+```
