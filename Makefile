@@ -35,4 +35,8 @@ install:
 uninstall:
 	pip uninstall user_agent
 
-.PHONY: clean sdist wheel upload-test upload install uninstall
+## update-version: Update the version number in setup.py
+update-version:
+	sed -i 's/^    version=".*",/    version="$(NEW_VERSION)",/' setup.py
+
+.PHONY: clean sdist wheel upload-test upload install uninstall update-version
