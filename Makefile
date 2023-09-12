@@ -35,8 +35,12 @@ install:
 uninstall:
 	pip uninstall user_agent
 
+## test: Run the unit tests
+test:
+	python -m unittest discover
+
 ## update-version: Update the version number in setup.py
 update-version:
 	sed -i 's/^    version=".*",/    version="$(NEW_VERSION)",/' setup.py
 
-.PHONY: clean sdist wheel upload-test upload install uninstall update-version
+.PHONY: clean sdist wheel upload-test upload install uninstall test update-version
