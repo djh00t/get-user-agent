@@ -52,7 +52,7 @@ jobs:
     # Pulls the package from TestPyPI and runs tests
     - name: Pull from TestPyPI and test
       run: |
-        pip install --index-url https://test.pypi.org/simple/ get_user_agent_pls
+        pip install --index-url https://test.pypi.org/simple/ get-user-agent-pls
         # Add commands to run your tests here
         python -m unittest discover
 
@@ -63,10 +63,15 @@ jobs:
     # Pulls the package from PyPI and runs tests
     - name: Pull from PyPI and test
       run: |
-        pip install get-user-agent
+        pip install get-user-agent-pls
         python -m unittest discover
 
     # Updates the version number
     - name: Update version number
       run: |
         make update-version NEW_VERSION=$NEW_VERSION
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'github-actions@github.com'
+        git add setup.py
+        git commit -m "Update version number"
+        git push

@@ -56,3 +56,18 @@ update-version:
 	sed -i 's/^    version=".*",/    version="$(NEW_VERSION)",/' setup.py
 
 .PHONY: clean check-packages sdist wheel upload-test upload install uninstall test update-version
+
+# Check if conda or miniconda is installed, if not install miniconda
+check-conda:
+	@command -v conda >/dev/null 2>&1 || { \
+		echo "Conda is not installed. Installing Miniconda..."; \
+		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh; \
+		bash ~/miniconda.sh -b -p $$HOME/miniconda; \
+		eval "$$($$HOME/miniconda/bin/conda shell.bash hook)"; \
+		conda init; \
+	}
+
+# Create a new conda environment
+create-env: check-conda
+	conda create --name $(CONDA_ENV_NAME) python=3.8 --yes
+	@echo "To activate environment, use: conda activate $(CONDA_ENV_NAME)"
