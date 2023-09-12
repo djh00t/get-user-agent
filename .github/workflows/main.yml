@@ -66,10 +66,9 @@ jobs:
         pip install get-user-agent-pls
         python -m unittest discover
 
-    # Updates the version number
-    - name: Update version number
+    # If uploads are successful, push the updated setup.py back to the repository
+    - name: Push updated setup.py to repository
       run: |
-        make update-version NEW_VERSION=$NEW_VERSION
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'github-actions@github.com'
         git add setup.py

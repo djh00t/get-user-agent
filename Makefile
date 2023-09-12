@@ -31,12 +31,12 @@ sdist: clean
 wheel: clean
 	python setup.py sdist bdist_wheel
 
-## upload-test: Upload the distribution package to TestPyPI
-upload-test: wheel
+## upload-test: Update version number and upload the distribution package to TestPyPI
+upload-test: update-version wheel
 	twine upload --repository testpypi --username $(TWINE_USERNAME) --password $(TEST_TWINE_PASSWORD) dist/*
 
-## upload: Upload the distribution package to PyPI
-upload: wheel
+## upload: Update version number and upload the distribution package to PyPI
+upload: update-version wheel
 	twine upload --username $(TWINE_USERNAME) --password $(PYPI_TWINE_PASSWORD) dist/*
 
 ## install: Install the package locally
