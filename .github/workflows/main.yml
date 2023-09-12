@@ -57,7 +57,7 @@ jobs:
       # environment variable
       - name: Increment version number
         run: |
-          make increment-version
+          make update-version
           export VERSION=$(cat VERSION)
 
       # Builds the package and runs tests
@@ -81,6 +81,7 @@ jobs:
   build-production:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    needs: build-test
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -103,7 +104,7 @@ jobs:
       # environment variable
       - name: Increment version number
         run: |
-          make increment-version
+          make update-version
           export VERSION=$(cat VERSION)
 
       # Builds the package and runs tests
