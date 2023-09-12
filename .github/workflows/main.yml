@@ -16,13 +16,15 @@
 ### used to increment the version number in the VERSION file.
 ###
 
-name: CI
+name: CI - Version ${{ env.VERSION }}
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push or pull request events but only for the main
+  # branch and not for VERSION file changes
   push:
     branches: [ main ]
+    paths-ignore: [ VERSION ]
   pull_request:
     branches: [ main ]
 
@@ -52,12 +54,12 @@ jobs:
           python -m pip install --upgrade pip
           make check-packages
       
-      # Increment the version number in the VERSION file and set the VERSION
+      # Read the version number from the VERSION file, increment it, and set the VERSION
       # environment variable
-      - name: Increment version number
+      - name: Read and increment version number
         run: |
-          make update-version
-          export VERSION=$(cat VERSION)
+          VERSION=$(awk -F. '{print $$1"."$$2"."$$3+1}' VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # Builds the package and runs tests
       - name: Build and test
