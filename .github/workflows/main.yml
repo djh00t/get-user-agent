@@ -66,9 +66,9 @@ jobs:
         pip install get-user-agent-pls
         python -m unittest discover
 
-    # If uploads are successful, push the updated VERSION file back to the repository if it has changed
+    # If uploads are successful, push the updated VERSION file back to the repository only if it has changed
     - name: Push updated VERSION to repository
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'github-actions@github.com'
-        git diff --quiet VERSION || (git add VERSION && git commit -m "Update version number" && git push)
+        git diff --quiet VERSION || (git add VERSION && git commit -m "Update version number" && git push) || echo "VERSION file not updated"

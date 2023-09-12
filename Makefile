@@ -31,12 +31,14 @@ sdist: clean
 wheel: clean
 	python setup.py sdist bdist_wheel
 
-## upload-test: Update version number and upload the distribution package to TestPyPI
+## upload-test: Update version number, echo it to console and upload the distribution package to TestPyPI
 upload-test: update-version wheel
-	twine upload --repository testpypi --username $(TWINE_USERNAME) --password $(TEST_TWINE_PASSWORD) dist/*
+	@echo "Uploading Version $NEW_VERSION to TestPyPI..."
+	twine upload --repository-url https://test.pypi.org/legacy/ --username $(TWINE_USERNAME) --password $(TEST_TWINE_PASSWORD) dist/*
 
 ## upload: Update version number and upload the distribution package to PyPI
 upload: update-version wheel
+	@echo "Uploading Version $NEW_VERSION to PyPI..."
 	twine upload --username $(TWINE_USERNAME) --password $(PYPI_TWINE_PASSWORD) dist/*
 
 ## install: Install the package locally
@@ -51,9 +53,11 @@ uninstall:
 test: check-packages
 	python -m unittest discover
 
-## update-version: Update the version number in VERSION file
+## update-version: Read the version number from VERSION file, increment the last digit, update the VERSION file, and echo it
 update-version:
+	$(eval NEW_VERSION=$(shell echo $$(($(cat VERSION | rev | cut -d. -f1 | rev)+1))))
 	echo "$(NEW_VERSION)" > VERSION
+	@echo "Version updated to $(NEW_VERSION)"
 
 .PHONY: clean check-packages sdist wheel upload-test upload install uninstall test update-version
 
