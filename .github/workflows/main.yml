@@ -1,4 +1,20 @@
-# This is a basic workflow to help you get started with Actions
+###
+### get_user_agent_pls Build & Push Script
+###
+### This script is used to build and push the get_user_agent_pls package to PyPI and TestPyPI.
+### It is intended to be run as a GitHub Action. The high level workflow is as follows:
+###
+###   1. Increment the version number in the VERSION file. Only the 3rd digit (patch) should
+###      be incremented. The 1st (major) and 2nd (minor) digits should only be incremented
+###      when a backwards incompatible change is made.
+###   2. Build the package and run tests. If the tests fail, the script will exit.
+###   3. Push the package to TestPyPI and run tests. If the tests fail, the script will exit.
+###   4. Push the package to PyPI and run tests. If the tests fail, the script will exit.
+###   5. If the tests pass, push the updated VERSION file back to the repository.
+###
+### The script uses the Makefile to perform the build and test steps. The Makefile is also
+### used to increment the version number in the VERSION file.
+###
 
 name: CI
 
@@ -15,60 +31,103 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a job called "build-test" and "build-production"
+  build-test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # Sets up Python environment
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      # Setup python environment
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flit
+          pip install twine
+      
+      # Increment the version number in the VERSION file and set the VERSION
+      # environment variable
+      - name: Increment version number
+        run: |
+          make increment-version
+          export VERSION=$(cat VERSION)
 
-    # Installs dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install twine wheel
+      # Builds the package and runs tests
+      - name: Build and test
+        run: |
+          make sdist
+          make wheel
+          make test
 
-    # Builds the package and runs tests
-    - name: Build and test
-      run: |
-        make sdist
-        make wheel
-        make test
+      # If tests pass, push the package to TestPyPI
+      - name: Push to TestPyPI
+        run: |
+          make upload-test TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }}
 
-    # If tests pass, pushes the package to TestPyPI
-    - name: Push to TestPyPI
-      run: |
-        make upload-test TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }}
+      # Pull the package from TestPyPI and run tests
+      - name: Pull from TestPyPI and test
+        run: |
+          pip install --index-url https://test.pypi.org/simple/ get-user-agent-pls
+          python -m unittest discover
 
-    # Pulls the package from TestPyPI and runs tests
-    - name: Pull from TestPyPI and test
-      run: |
-        pip install --index-url https://test.pypi.org/simple/ get-user-agent-pls
-        # Add commands to run your tests here
-        python -m unittest discover
+  build-production:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-    # If tests pass, pushes the package to PyPI and runs tests
-    - name: Push to PyPI
-      run: |
-        make upload PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
-    # Pulls the package from PyPI and runs tests
-    - name: Pull from PyPI and test
-      run: |
-        pip install get-user-agent-pls
-        python -m unittest discover
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # If uploads are successful, push the updated VERSION file back to the repository only if it has changed
-    - name: Push updated VERSION to repository
-      run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'github-actions@github.com'
-        git diff --quiet VERSION || (git add VERSION && git commit -m "Update version number" && git push) || echo "VERSION file not updated"
+      # Setup python environment
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flit
+          pip install twine
+      
+      # Increment the version number in the VERSION file and set the VERSION
+      # environment variable
+      - name: Increment version number
+        run: |
+          make increment-version
+          export VERSION=$(cat VERSION)
+
+      # Builds the package and runs tests
+      - name: Build and test
+        run: |
+          make sdist
+          make wheel
+          make test
+
+      # If tests pass, pushes the package to PyPI and runs tests
+      - name: Push to PyPI
+        run: |
+          make upload PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
+
+      # Pulls the package from PyPI and runs tests
+      - name: Pull from PyPI and test
+        run: |
+          pip install get-user-agent-pls
+          python -m unittest discover
+
+      # If uploads are successful, and the VERSION file has changed push the
+      # updated VERSION file back to the repository
+      - name: Push updated VERSION to repository
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github-actions@github.com'
+          git diff --quiet VERSION || (git add VERSION && git commit -m "Update version number - $VERSION" && git push) || echo "VERSION file not updated"

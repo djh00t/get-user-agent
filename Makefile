@@ -32,7 +32,7 @@ wheel: clean
 	python setup.py sdist bdist_wheel
 
 ## upload-test: Run tests, if they pass update version number, echo it to console and upload the distribution package to TestPyPI
-upload-test: test update-version wheel
+upload-test: test wheel
 	@echo "Uploading Version $NEW_VERSION to TestPyPI..."
 	twine upload --repository-url https://test.pypi.org/legacy/ --username $(TWINE_USERNAME) --password $(TEST_TWINE_PASSWORD) dist/*
 
@@ -41,9 +41,10 @@ upload: test wheel
 	@echo "Uploading Version $NEW_VERSION to PyPI..."
 	twine upload --username $(TWINE_USERNAME) --password $(PYPI_TWINE_PASSWORD) dist/*
 
-## install: Install the package locally
+## install: Install the package locally in get_user_agent_pls conda environment
 install:
 	pip install -e .
+
 
 ## uninstall: Uninstall the local package
 uninstall:
@@ -51,10 +52,12 @@ uninstall:
 
 ## test: Run the unit tests
 test: check-packages
+	@echo "Running unit tests..."
 	python -m unittest discover
 
 ## update-version: Read the version number from VERSION file, increment the last digit, update the VERSION file, and echo it
 update-version:
+	@echo "Updating version..."
 	$(eval NEW_VERSION=$(shell echo $$(($(cat VERSION | rev | cut -d. -f1 | rev)+1))))
 	echo "$(NEW_VERSION)" > VERSION
 	@echo "Version updated to $(NEW_VERSION)"
