@@ -1,9 +1,19 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name='user_agent',
-    version='0.1',
+    version='0.0.1',
+    author='David Hooton',
+    author_email='user_agent@hooton.org',
+    description='A package to fetch user-agent strings',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/djh00t/user_agent',
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'requests',
         'beautifulsoup4',
@@ -13,4 +23,10 @@ setup(
             'user_agent=user_agent.user_agent:main',
         ],
     },
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires='>=3.6',
 )
