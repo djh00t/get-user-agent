@@ -59,7 +59,7 @@ jobs:
     # If tests pass, pushes the package to PyPI and runs tests
     - name: Push to PyPI
       run: |
-        make upload
+        make upload TEST_PYPI_USER_AGENT=${{ secrets.TEST_PYPI_USER_AGENT }} PYPI_USER_AGENT=${{ secrets.PYPI_USER_AGENT }}
     # Pulls the package from PyPI and runs tests
     - name: Pull from PyPI and test
       run: |
