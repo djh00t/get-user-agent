@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='get_user_agent_pls',
-    version='0.0.0',
+    version='0.0.0a',
     author='David Hooton',
     author_email='get_user_agent_pls@hooton.org',
     description='A package to fetch get-user-agent strings',
