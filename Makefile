@@ -48,7 +48,7 @@ install:
 
 ## uninstall: Uninstall the local package
 uninstall:
-	pip uninstall get-user-agent
+	pip uninstall get-user-agent-pls
 
 ## test: Run the unit tests
 test: check-packages
